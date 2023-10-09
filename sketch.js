@@ -12,11 +12,17 @@ var hueMaxSlider;
 var text1;
 var text2;
 
+var p;
+
 function setup() {
-    createCanvas(windowWidth-50, windowHeight-80);
+    p = createCanvas(windowWidth-50, windowHeight-80);
     capture = createCapture(VIDEO);
+    // createCanvas(capture.width * 3, capture.height *4);
     // capture.size(width, height);
 
+    
+
+    // p.size(capture.width * 3, capture.height *4);
   // div = document.getElementById("container");
   // asciiDiv = createDiv();
   // asciiDiv.parent(div);
@@ -50,6 +56,9 @@ var isStatic = false;
 
 
 function draw() {
+    p.width = capture.width;
+    p.height = capture.height + 100;
+
     background(71, 71, 71);
     video = capture.get();
 
@@ -62,23 +71,26 @@ function draw() {
     
     // video.updatePixels();
     if (isStatic) {
-        image(screenCap, 0, 0);
+        image(screenCap, 0, 0, capture.width, capture.height);
         // console.log("printing static image")
     } else {
-        image(video, 0, 0);
+        image(video, 0, 0, capture.width, capture.height);
     }
 
     // image(video, 0, 0);
 
     
-    text(hueMinSlider.value(), 150, 25 + 490);
-    text(hueMaxSlider.value(), 150, 65 + 490);
+    text(hueMinSlider.value(), 150, 35 + capture.height);
+    text(hueMaxSlider.value(), 150, 75 + capture.height);
 
     hueMin = hueMinSlider.value();
     hueMax = hueMaxSlider.value();
 
     hueMinSlider.position(10, capture.height + 20);
     hueMaxSlider.position(10, capture.height + 60);
+
+
+    
 }
 
 
@@ -152,6 +164,13 @@ function mousePressed() {
     }
 
 }
+
+
+
+
+
+
+
 
 
 
