@@ -31,7 +31,8 @@ function setup() {
     // hueMinSlider.style(width, '80px');
 
     hueMaxSlider = createSlider(0, 360, hueMax);
-    hueMaxSlider.position(10, 520);
+    hueMaxSlider.position(10, 540);
+    // hueMaxSlider.size(300, 500);
 
 
 
@@ -71,10 +72,13 @@ function draw() {
 
     
     text(hueMinSlider.value(), 150, 25 + 490);
-    text(hueMaxSlider.value(), 150, 45 + 490);
+    text(hueMaxSlider.value(), 150, 65 + 490);
 
     hueMin = hueMinSlider.value();
     hueMax = hueMaxSlider.value();
+
+    hueMinSlider.position(10, capture.height + 20);
+    hueMaxSlider.position(10, capture.height + 60);
 }
 
 
@@ -146,7 +150,11 @@ function mousePressed() {
         isStatic = !isStatic;
 
     }
+
 }
+
+
+
 
 
 
