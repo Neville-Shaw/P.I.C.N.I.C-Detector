@@ -88,6 +88,8 @@ function draw() {
     hueMinSlider.position(10, capture.height + 20);
     hueMaxSlider.position(10, capture.height + 60);
 
+    saturationMinSlider.position(10, capture.height + 110);
+
 
     
 }
@@ -212,7 +214,4 @@ function RGBtoHue(r, g, b) {
 
     */
 }
-
-
-
 
