@@ -4,6 +4,8 @@ var screenCap;
 var hueMin = 10;
 var hueMax = 70;
 
+// 38 - 70 is good on iphone?!!?!?!!?!
+
 var hueMinSlider;
 var hueMaxSlider;
 
@@ -11,9 +13,9 @@ var text1;
 var text2;
 
 function setup() {
-    createCanvas(windowHeight, windowWidth);
+    createCanvas(windowWidth-50, windowHeight-80);
     capture = createCapture(VIDEO);
-  // video.size(400, 400);
+    // capture.size(width, height);
 
   // div = document.getElementById("container");
   // asciiDiv = createDiv();
@@ -24,17 +26,20 @@ function setup() {
 
     capture.hide();
 
-    hueMinSlider = createSlider(0, 360, 10);
-    hueMinSlider.position(10, 10);
+    hueMinSlider = createSlider(0, 360, hueMin);
+    hueMinSlider.position(10, 500);
     // hueMinSlider.style(width, '80px');
 
-    hueMaxSlider = createSlider(0, 360, 70);
-    hueMaxSlider.position(10, 30);
+    hueMaxSlider = createSlider(0, 360, hueMax);
+    hueMaxSlider.position(10, 520);
 
 
 
     // hueMinSlider.value() = 10;
     // hueMaxSlider.value() = 70;
+    // fill(255, 255, 255);
+    
+    textSize(20);
 
 }
 
@@ -44,11 +49,11 @@ var isStatic = false;
 
 
 function draw() {
-    
+    background(71, 71, 71);
     video = capture.get();
 
     
-    colorMode(HSB, 360, 100, 100, 1);
+    // colorMode(HSB, 360, 100, 100, 1);
     
 
     // video.loadPixels();
@@ -65,8 +70,8 @@ function draw() {
     // image(video, 0, 0);
 
     
-    text(hueMinSlider.value(), 150, 25);
-    text(hueMaxSlider.value(), 150, 45);
+    text(hueMinSlider.value(), 150, 25 + 490);
+    text(hueMaxSlider.value(), 150, 45 + 490);
 
     hueMin = hueMinSlider.value();
     hueMax = hueMaxSlider.value();
@@ -74,68 +79,75 @@ function draw() {
 
 
 function mousePressed() {
-    screenCap = capture.get();
+    if ((mouseX > 0 && mouseX < capture.width) && (mouseY > 0 && mouseY < capture.height)) {
 
-    screenCap.loadPixels();
+    
 
-    // console.log(videoCap.pixels.length);
-    for (var i = 0; i < screenCap.pixels.length; i += 4) {
-        
+
+        screenCap = capture.get();
+
+        screenCap.loadPixels();
+
+        // console.log(videoCap.pixels.length);
+        for (var i = 0; i < screenCap.pixels.length; i += 4) {
+            
+                
+
+
+            // const pixelIndex = (i + j * screenCap.width) * 4;
+
+
+            var red = screenCap.pixels[i + 0];
+            var green = screenCap.pixels[i + 1];
+            var blue = screenCap.pixels[i + 2];
             
 
+            var min = Math.min(Math.min(red, green), blue);
+            var max = Math.max(Math.max(red, green), blue);
 
-        // const pixelIndex = (i + j * screenCap.width) * 4;
+            if (min == max) {
+                hue = 0;
+            }
 
+            var hue = 0;
+            if (max == red) {
+                hue = (green - blue) / (max - min);
 
-        var red = screenCap.pixels[i + 0];
-        var green = screenCap.pixels[i + 1];
-        var blue = screenCap.pixels[i + 2];
-        
+            } else if (max == green) {
+                hue = 2 + (blue - red) / (max - min);
 
-        var min = Math.min(Math.min(red, green), blue);
-        var max = Math.max(Math.max(red, green), blue);
+            } else {
+                hue = 4 + (red - green) / (max - min);
+            }
 
-        if (min == max) {
-            hue = 0;
-        }
-
-        var hue = 0;
-        if (max == red) {
-            hue = (green - blue) / (max - min);
-
-        } else if (max == green) {
-            hue = 2 + (blue - red) / (max - min);
-
-        } else {
-            hue = 4 + (red - green) / (max - min);
-        }
-
-        hue = hue * 60;
-        if (hue < 0) hue = hue + 360;
-
-    
+            hue = hue * 60;
+            if (hue < 0) hue = hue + 360;
 
         
-    
-        // console.log(hue(c));
-        // screenCap.updatePixels();
 
-        var hueVal = hue;
-
-
-        if (hueVal > hueMin && hueVal < hueMax) {
-            screenCap.pixels[i + 0] = 200;
-            screenCap.pixels[i + 1] = 0;
-            screenCap.pixels[i + 2] = 200;
-        }
-        // console.log("Finished", hueVal);
+            
         
+            // console.log(hue(c));
+            // screenCap.updatePixels();
+
+            var hueVal = hue;
+
+
+            if (hueVal > hueMin && hueVal < hueMax) {
+                screenCap.pixels[i + 0] = 200;
+                screenCap.pixels[i + 1] = 0;
+                screenCap.pixels[i + 2] = 200;
+            }
+            // console.log("Finished", hueVal);
+            
+        }
+        screenCap.updatePixels();
+        
+        isStatic = !isStatic;
+
     }
-    screenCap.updatePixels();
-    
-    isStatic = !isStatic;
-
-
 }
+
+
 
 
