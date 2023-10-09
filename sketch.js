@@ -14,6 +14,8 @@ function setup() {
   // density = density5;
 
     // video.hide();
+
+    capture.hide();
 }
 
 
